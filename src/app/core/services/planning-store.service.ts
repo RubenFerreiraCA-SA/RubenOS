@@ -25,12 +25,14 @@ export class PlanningStoreService {
   private readonly firestore = inject(Firestore);
 
   readonly planningLogs$ = collectionData(
-    query(
-      collection(this.firestore, 'planningLogs'),
-      orderBy('createdAt', 'desc'),
-    ),
+    query(collection(this.firestore, 'planningLogs'), orderBy('createdAt', 'desc')),
     { idField: 'id' },
   ) as Observable<(PlanningSessionRecord & { id: string })[]>;
+
+  readonly tasks$ = collectionData(
+    query(collection(this.firestore, 'tasks'), orderBy('priorityRank', 'asc')),
+    { idField: 'id' },
+  ) as Observable<(PlanningTask & { id: string })[]>;
 
   async savePlanningSession(output: PlanningSessionOutput): Promise<void> {
     const now = serverTimestamp();
@@ -49,9 +51,7 @@ export class PlanningStoreService {
     }
 
     if (output.calendarBlocks?.length) {
-      await Promise.all(
-        output.calendarBlocks.map((block) => this.saveCalendarBlock(block, now)),
-      );
+      await Promise.all(output.calendarBlocks.map((block) => this.saveCalendarBlock(block, now)));
     }
   }
 
@@ -71,10 +71,7 @@ export class PlanningStoreService {
     });
   }
 
-  private saveCalendarBlock(
-    block: CalendarBlock,
-    now: unknown,
-  ): Promise<unknown> {
+  private saveCalendarBlock(block: CalendarBlock, now: unknown): Promise<unknown> {
     return addDoc(collection(this.firestore, 'calendarBlocks'), {
       ...block,
       createdAt: now,

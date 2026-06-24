@@ -10,7 +10,7 @@
 
       <p>{{ log.summary }}</p>
 
-      @if (log.decisions?.length) {
+      @if (log.decisions.length) {
         <h4>Decisions</h4>
         <ul>
           @for (decision of log.decisions; track decision) {
@@ -19,7 +19,7 @@
         </ul>
       }
 
-      @if (log.nextActions?.length) {
+      @if (log.nextActions.length) {
         <h4>Next actions</h4>
         <ul>
           @for (action of log.nextActions; track action) {

@@ -5,7 +5,7 @@ import { PlanningStoreService } from '../../../core/services/planning-store.serv
 
 @Component({
   selector: 'app-planning-logs',
-  imports: [AsyncPipe, DatePipe],
+  imports: [AsyncPipe],
   templateUrl: './planning-logs.html',
   styleUrl: './planning-logs.scss',
 })

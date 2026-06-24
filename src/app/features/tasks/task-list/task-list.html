@@ -1,1 +1,31 @@
-<p>task-list works!</p>
+<section class="tasks">
+  <h2>Personal Command List</h2>
+
+  @for (task of tasks$ | async; track task.id) {
+    <article class="task-card">
+      <div class="rank">{{ task.priorityRank }}</div>
+
+      <div>
+        <h3>{{ task.title }}</h3>
+
+        <p>
+          {{ task.priorityBand }} · {{ task.status }} · {{ task.area }}
+        </p>
+
+        @if (task.plannedDate) {
+          <p>Planned: {{ task.plannedDate }}</p>
+        }
+
+        @if (task.dueDate) {
+          <p>Due: {{ task.dueDate }}</p>
+        }
+
+        @if (task.notes) {
+          <p>{{ task.notes }}</p>
+        }
+      </div>
+    </article>
+  } @empty {
+    <p>No tasks yet.</p>
+  }
+</section>

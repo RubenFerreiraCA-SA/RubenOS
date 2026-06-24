@@ -9,6 +9,7 @@ import {
   TaskArea,
   TaskStatus,
 } from '../../../core/models/planning-session.model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-task-list',
@@ -50,9 +51,16 @@ export class TaskList {
       return;
     }
 
+    const tasks = await firstValueFrom(this.tasks$);
+
+    const openTasks = tasks.filter((task) => task.status === 'open');
+
+    const nextRank =
+      openTasks.length > 0 ? Math.max(...openTasks.map((task) => task.priorityRank)) + 1 : 1;
+
     await this.planningStore.createTask({
       title,
-      priorityRank: this.priorityRank(),
+      priorityRank: nextRank,
       priorityBand: this.priorityBand(),
       status: 'open',
       area: this.area(),
@@ -63,7 +71,7 @@ export class TaskList {
 
     this.title.set('');
     this.priorityBand.set('P2');
-    this.priorityRank.set(1);
+    this.priorityRank.set(nextRank + 1);
     this.area.set('Personal Projects');
     this.notes.set('');
   }

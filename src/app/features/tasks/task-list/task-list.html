@@ -27,14 +27,6 @@
     </select>
 
     <input
-      type="number"
-      [ngModel]="priorityRank()"
-      (ngModelChange)="priorityRank.set(+$event)"
-      name="priorityRank"
-      min="1"
-    />
-
-    <input
       type="text"
       [ngModel]="notes()"
       (ngModelChange)="notes.set($event)"

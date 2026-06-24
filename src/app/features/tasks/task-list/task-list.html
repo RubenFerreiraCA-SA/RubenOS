@@ -10,11 +10,7 @@
       placeholder="New task..."
     />
 
-    <select
-      [ngModel]="area()"
-      (ngModelChange)="area.set($event)"
-      name="area"
-    >
+    <select [ngModel]="area()" (ngModelChange)="area.set($event)" name="area">
       @for (option of areas; track option) {
         <option [value]="option">{{ option }}</option>
       }
@@ -56,9 +52,7 @@
       <div>
         <h3>{{ task.title }}</h3>
 
-        <p>
-          {{ task.priorityBand }} · {{ task.status }} · {{ task.area }}
-        </p>
+        <p>{{ task.priorityBand }} · {{ task.status }} · {{ task.area }}</p>
 
         @if (task.plannedDate) {
           <p>Planned: {{ task.plannedDate }}</p>
@@ -73,6 +67,8 @@
         }
 
         <div class="actions">
+          <button type="button" (click)="moveUp(task)">Move up</button>
+          <button type="button" (click)="moveDown(task)">Move down</button>
           <button type="button" (click)="updateStatus(task.id, 'done')">Done</button>
           <button type="button" (click)="updateStatus(task.id, 'deferred')">Defer</button>
           <button type="button" (click)="updateStatus(task.id, 'waiting')">Waiting</button>

@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { PlanningStoreService } from '../../../core/services/planning-store.service';
 import {
+  PlanningTask,
   PriorityBand,
   TaskArea,
   TaskStatus,
@@ -65,5 +66,17 @@ export class TaskList {
     this.priorityRank.set(1);
     this.area.set('Personal Projects');
     this.notes.set('');
+  }
+
+  moveUp(task: PlanningTask & { id: string }): Promise<void> {
+    if (task.priorityRank <= 1) {
+      return Promise.resolve();
+    }
+
+    return this.planningStore.updateTaskRank(task.id, task.priorityRank - 1);
+  }
+
+  moveDown(task: PlanningTask & { id: string }): Promise<void> {
+    return this.planningStore.updateTaskRank(task.id, task.priorityRank + 1);
   }
 }

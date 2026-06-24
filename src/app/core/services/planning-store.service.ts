@@ -31,30 +31,24 @@ export class PlanningStoreService {
     { idField: 'id' },
   ) as Observable<(PlanningSessionRecord & { id: string })[]>;
 
-readonly tasks$ = collectionData(
-  query(
-    collection(this.firestore, 'tasks'),
-    orderBy('priorityRank', 'asc'),
-  ),
-  { idField: 'id' },
-).pipe(
-  map((tasks) =>
-    (tasks as (PlanningTask & { id: string })[]).sort((a, b) => {
-      const statusWeight = (status: string): number => {
-        if (status === 'open') return 1;
-        if (status === 'waiting') return 2;
-        if (status === 'deferred') return 3;
-        if (status === 'done') return 4;
-        return 5;
-      };
+  readonly tasks$ = collectionData(
+    query(collection(this.firestore, 'tasks'), orderBy('priorityRank', 'asc')),
+    { idField: 'id' },
+  ).pipe(
+    map((tasks) =>
+      (tasks as (PlanningTask & { id: string })[]).sort((a, b) => {
+        const statusWeight = (status: string): number => {
+          if (status === 'open') return 1;
+          if (status === 'waiting') return 2;
+          if (status === 'deferred') return 3;
+          if (status === 'done') return 4;
+          return 5;
+        };
 
-      return (
-        statusWeight(a.status) - statusWeight(b.status) ||
-        a.priorityRank - b.priorityRank
-      );
-    }),
-  ),
-) as Observable<(PlanningTask & { id: string })[]>;
+        return statusWeight(a.status) - statusWeight(b.status) || a.priorityRank - b.priorityRank;
+      }),
+    ),
+  ) as Observable<(PlanningTask & { id: string })[]>;
   async savePlanningSession(output: PlanningSessionOutput): Promise<void> {
     const now = serverTimestamp();
 
@@ -95,6 +89,15 @@ readonly tasks$ = collectionData(
       ...task,
       createdAt: now,
       updatedAt: now,
+    });
+  }
+
+  async updateTaskRank(taskId: string, priorityRank: number): Promise<void> {
+    const taskRef = doc(this.firestore, `tasks/${taskId}`);
+
+    await updateDoc(taskRef, {
+      priorityRank,
+      updatedAt: serverTimestamp(),
     });
   }
 

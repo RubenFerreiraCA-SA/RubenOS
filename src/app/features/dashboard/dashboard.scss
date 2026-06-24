@@ -1,12 +1,15 @@
 .dashboard {
-  display: grid;
+  display: flex;
+  flex-direction: row;
   gap: 1rem;
+  width: 100%;
 }
 
 .panel {
   border: 1px solid #ddd;
   border-radius: 0.75rem;
   padding: 1rem;
+  flex: 1;
 }
 
 li {

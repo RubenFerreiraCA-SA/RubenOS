@@ -1,6 +1,54 @@
 <section class="tasks">
   <h2>Personal Command List</h2>
 
+  <form class="task-form" (ngSubmit)="addTask()">
+    <input
+      type="text"
+      [ngModel]="title()"
+      (ngModelChange)="title.set($event)"
+      name="title"
+      placeholder="New task..."
+    />
+
+    <select
+      [ngModel]="area()"
+      (ngModelChange)="area.set($event)"
+      name="area"
+    >
+      @for (option of areas; track option) {
+        <option [value]="option">{{ option }}</option>
+      }
+    </select>
+
+    <select
+      [ngModel]="priorityBand()"
+      (ngModelChange)="priorityBand.set($event)"
+      name="priorityBand"
+    >
+      @for (option of priorityBands; track option) {
+        <option [value]="option">{{ option }}</option>
+      }
+    </select>
+
+    <input
+      type="number"
+      [ngModel]="priorityRank()"
+      (ngModelChange)="priorityRank.set(+$event)"
+      name="priorityRank"
+      min="1"
+    />
+
+    <input
+      type="text"
+      [ngModel]="notes()"
+      (ngModelChange)="notes.set($event)"
+      name="notes"
+      placeholder="Notes..."
+    />
+
+    <button type="submit">Add task</button>
+  </form>
+
   @for (task of tasks$ | async; track task.id) {
     <article class="task-card" [class.task-card--done]="task.status === 'done'">
       <div class="rank">{{ task.priorityRank }}</div>
@@ -25,21 +73,10 @@
         }
 
         <div class="actions">
-          <button type="button" (click)="updateStatus(task.id, 'done')">
-            Done
-          </button>
-
-          <button type="button" (click)="updateStatus(task.id, 'deferred')">
-            Defer
-          </button>
-
-          <button type="button" (click)="updateStatus(task.id, 'waiting')">
-            Waiting
-          </button>
-
-          <button type="button" (click)="updateStatus(task.id, 'open')">
-            Reopen
-          </button>
+          <button type="button" (click)="updateStatus(task.id, 'done')">Done</button>
+          <button type="button" (click)="updateStatus(task.id, 'deferred')">Defer</button>
+          <button type="button" (click)="updateStatus(task.id, 'waiting')">Waiting</button>
+          <button type="button" (click)="updateStatus(task.id, 'open')">Reopen</button>
         </div>
       </div>
     </article>

@@ -69,6 +69,16 @@ export class PlanningStoreService {
     });
   }
 
+  async createTask(task: Omit<PlanningTask, 'createdAt' | 'updatedAt'>): Promise<void> {
+    const now = serverTimestamp();
+
+    await addDoc(collection(this.firestore, 'tasks'), {
+      ...task,
+      createdAt: now,
+      updatedAt: now,
+    });
+  }
+
   private savePlan(plan: PlanRecord, now: unknown): Promise<unknown> {
     return addDoc(collection(this.firestore, 'plans'), {
       ...plan,

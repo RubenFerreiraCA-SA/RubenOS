@@ -1,3 +1,22 @@
+.task-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 0.7fr 0.5fr 2fr auto;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.task-form input,
+.task-form select,
+.task-form button {
+  padding: 0.6rem;
+}
+
+@media (max-width: 900px) {
+  .task-form {
+    grid-template-columns: 1fr;
+  }
+}
 .tasks {
   display: grid;
   gap: 1rem;

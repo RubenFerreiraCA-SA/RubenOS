@@ -10,7 +10,7 @@
           <h4>{{ logs[0].title }}</h4>
           <p>{{ logs[0].summary }}</p>
 
-          @if (logs[0].nextActions?.length) {
+          @if (logs[0].nextActions.length) {
             <h5>Next actions</h5>
             <ul>
               @for (action of logs[0].nextActions; track action) {

@@ -1,1 +1,46 @@
-<p>dashboard works!</p>
+<section class="dashboard">
+  <h2>Dashboard</h2>
+
+  <section class="panel">
+    <h3>Latest Planning Log</h3>
+
+    @if (logs$ | async; as logs) {
+      @if (logs.length) {
+        <article>
+          <h4>{{ logs[0].title }}</h4>
+          <p>{{ logs[0].summary }}</p>
+
+          @if (logs[0].nextActions?.length) {
+            <h5>Next actions</h5>
+            <ul>
+              @for (action of logs[0].nextActions; track action) {
+                <li>{{ action }}</li>
+              }
+            </ul>
+          }
+        </article>
+      } @else {
+        <p>No planning logs yet.</p>
+      }
+    }
+  </section>
+
+  <section class="panel">
+    <h3>Top Tasks</h3>
+
+    @if (tasks$ | async; as tasks) {
+      @if (tasks.length) {
+        <ol>
+          @for (task of tasks.slice(0, 5); track task.id) {
+            <li>
+              <strong>{{ task.title }}</strong>
+              <span>{{ task.priorityBand }} · {{ task.area }}</span>
+            </li>
+          }
+        </ol>
+      } @else {
+        <p>No tasks yet.</p>
+      }
+    }
+  </section>
+</section>

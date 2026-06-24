@@ -1,0 +1,19 @@
+.dashboard {
+  display: grid;
+  gap: 1rem;
+}
+
+.panel {
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+li {
+  margin-bottom: 0.75rem;
+}
+
+span {
+  display: block;
+  opacity: 0.75;
+}

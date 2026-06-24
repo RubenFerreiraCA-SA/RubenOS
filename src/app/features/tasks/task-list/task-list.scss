@@ -26,3 +26,23 @@ h3,
 p {
   margin-top: 0;
 }
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.actions button {
+  padding: 0.4rem 0.7rem;
+  cursor: pointer;
+}
+
+.task-card--done {
+  opacity: 0.55;
+}
+
+.task-card--done h3 {
+  text-decoration: line-through;
+}

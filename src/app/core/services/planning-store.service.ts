@@ -4,9 +4,11 @@ import {
   addDoc,
   collection,
   collectionData,
+  doc,
   orderBy,
   query,
   serverTimestamp,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 
@@ -53,6 +55,18 @@ export class PlanningStoreService {
     if (output.calendarBlocks?.length) {
       await Promise.all(output.calendarBlocks.map((block) => this.saveCalendarBlock(block, now)));
     }
+  }
+
+  async updateTaskStatus(
+    taskId: string,
+    status: 'open' | 'done' | 'deferred' | 'waiting',
+  ): Promise<void> {
+    const taskRef = doc(this.firestore, `tasks/${taskId}`);
+
+    await updateDoc(taskRef, {
+      status,
+      updatedAt: serverTimestamp(),
+    });
   }
 
   private savePlan(plan: PlanRecord, now: unknown): Promise<unknown> {

@@ -1,0 +1,34 @@
+<section class="logs">
+  <h2>Planning Logs</h2>
+
+  @for (log of logs$ | async; track log.id) {
+    <article class="log-card">
+      <header>
+        <h3>{{ log.title }}</h3>
+        <span>{{ log.level }} · {{ log.date }}</span>
+      </header>
+
+      <p>{{ log.summary }}</p>
+
+      @if (log.decisions?.length) {
+        <h4>Decisions</h4>
+        <ul>
+          @for (decision of log.decisions; track decision) {
+            <li>{{ decision }}</li>
+          }
+        </ul>
+      }
+
+      @if (log.nextActions?.length) {
+        <h4>Next actions</h4>
+        <ul>
+          @for (action of log.nextActions; track action) {
+            <li>{{ action }}</li>
+          }
+        </ul>
+      }
+    </article>
+  } @empty {
+    <p>No planning logs yet.</p>
+  }
+</section>

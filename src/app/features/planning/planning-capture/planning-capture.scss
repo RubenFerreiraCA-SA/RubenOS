@@ -1,0 +1,25 @@
+.capture {
+  display: grid;
+  gap: 1rem;
+}
+
+textarea {
+  min-height: 24rem;
+  width: 100%;
+  padding: 1rem;
+  font-family: monospace;
+}
+
+button {
+  width: fit-content;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+}
+
+.status {
+  color: green;
+}
+
+.error {
+  color: crimson;
+}

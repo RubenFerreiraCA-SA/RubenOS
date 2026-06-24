@@ -1,0 +1,22 @@
+.logs {
+  display: grid;
+  gap: 1rem;
+}
+
+.log-card {
+  border: 1px solid #ddd;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+h3,
+p {
+  margin-top: 0;
+}

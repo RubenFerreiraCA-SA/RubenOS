@@ -1,0 +1,24 @@
+<section class="capture">
+  <h2>Planning Capture</h2>
+
+  <p>
+    Paste the structured planning JSON from ChatGPT here, then save it to
+    Firestore.
+  </p>
+
+  <textarea
+    [ngModel]="rawJson()"
+    (ngModelChange)="rawJson.set($event)"
+    placeholder="Paste planning JSON here..."
+  ></textarea>
+
+  <button type="button" (click)="save()">Save planning session</button>
+
+  @if (status()) {
+    <p class="status">{{ status() }}</p>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+</section>

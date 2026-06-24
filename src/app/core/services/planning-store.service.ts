@@ -10,7 +10,7 @@ import {
   serverTimestamp,
   updateDoc,
 } from '@angular/fire/firestore';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 import {
   CalendarBlock,
@@ -31,11 +31,30 @@ export class PlanningStoreService {
     { idField: 'id' },
   ) as Observable<(PlanningSessionRecord & { id: string })[]>;
 
-  readonly tasks$ = collectionData(
-    query(collection(this.firestore, 'tasks'), orderBy('priorityRank', 'asc')),
-    { idField: 'id' },
-  ) as Observable<(PlanningTask & { id: string })[]>;
+readonly tasks$ = collectionData(
+  query(
+    collection(this.firestore, 'tasks'),
+    orderBy('priorityRank', 'asc'),
+  ),
+  { idField: 'id' },
+).pipe(
+  map((tasks) =>
+    (tasks as (PlanningTask & { id: string })[]).sort((a, b) => {
+      const statusWeight = (status: string): number => {
+        if (status === 'open') return 1;
+        if (status === 'waiting') return 2;
+        if (status === 'deferred') return 3;
+        if (status === 'done') return 4;
+        return 5;
+      };
 
+      return (
+        statusWeight(a.status) - statusWeight(b.status) ||
+        a.priorityRank - b.priorityRank
+      );
+    }),
+  ),
+) as Observable<(PlanningTask & { id: string })[]>;
   async savePlanningSession(output: PlanningSessionOutput): Promise<void> {
     const now = serverTimestamp();
 
